@@ -87,7 +87,7 @@ label.f{display:block;font-size:13px;color:var(--ink2);margin-top:10px}
   <b>訂便當說明</b>
   <ul>
     <li>價錢：排骨飯、蝦卷飯、焢肉飯、魚排飯、紅糟肉飯 <b>每個 120 元</b>；炸雞腿飯、滷雞腿飯 <b>每個 130 元</b></li>
-    <li><b>學生和老師的便當由家長會贊助</b>，只有陪同家長要自己負擔</li>
+    <li><b>學生和老師的便當由家長會贊助</b>，只有陪同家長要自行負擔</li>
     <li>截止前都可以回來修改</li>
   </ul>
   <div class="dl" id="dl">截止時間：11/21（五）下午 5:00</div>
@@ -132,7 +132,7 @@ function loadSel(){
 
 function dlText(){
   const t = DEADLINE - Date.now();
-  if (closed || t <= 0) { $('#dl').className = 'dl closed'; $('#dl').textContent = '已截止（11/21 下午 5:00），無法再修改。要更改請聯絡負責的家長。'; return; }
+  if (closed || t <= 0) { $('#dl').className = 'dl closed'; $('#dl').textContent = '已截止（11/21 下午 5:00），無法再修改。要更改請聯絡曼妮媽媽。'; return; }
   const h = Math.floor(t/3600000), m = Math.floor(t%3600000/60000);
   $('#dl').className = 'dl';
   $('#dl').textContent = `截止時間：11/21（五）下午 5:00・還有 ${h >= 24 ? Math.floor(h/24)+' 天 '+(h%24)+' 小時' : h+' 小時 '+m+' 分'}`;
