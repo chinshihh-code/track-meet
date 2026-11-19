@@ -87,7 +87,7 @@ label.f{display:block;font-size:13px;color:var(--ink2);margin-top:10px}
   <b>訂便當說明</b>
   <ul>
     <li>價錢：排骨飯、蝦卷飯、焢肉飯、魚排飯、紅糟肉飯 <b>每個 120 元</b>；炸雞腿飯、滷雞腿飯 <b>每個 130 元</b></li>
-    <li><b>學生和老師的便當免費</b>，只有陪同家長的便當要付錢</li>
+    <li><b>學生和老師的便當由家長會贊助</b>，只有陪同家長的便當要付錢</li>
     <li>截止前都可以回來修改</li>
   </ul>
   <div class="dl" id="dl">截止時間：11/21（五）下午 5:00</div>
@@ -172,8 +172,8 @@ function renderApp(){
     ${who}
     ${cur && !isP ? `<div class="mine">目前的訂單：11/24 <b>${esc(cur.d1||'還沒選')}</b>・11/25 <b>${esc(cur.d2||'還沒選')}</b></div>` : ''}
     ${ready ? `<h2><span class="step">2</span>選便當</h2>${DAYS.map(([k,l])=>dayHTML(k,l)).join('')}
-    <div class="sum"><span>${isP ? '要繳的金額' : '學生、老師免費'}</span><span class="amt num">${isP ? amount+' 元' : '0 元'}</span></div>
-    <button class="submit" id="submit" ${can?'':'disabled'}>${st.busy ? '送出中…' : (cur ? '更新訂單' : '送出訂單')}</button>
+    <div class="sum"><span>${isP ? '要繳的金額' : '家長會贊助'}</span><span class="amt num">${isP ? amount+' 元' : '0 元'}</span></div>
+    <button class="submit" id="submit" ${can?'':'disabled'}>${st.busy ? '送出中…' : (cur ? '更新訂單（送出）' : '送出訂單')}</button>
     ${isP && cur ? `<button class="back" id="remove" style="display:block;margin:10px auto 0;background:none;cursor:pointer;font:inherit;font-size:14px">刪除這位家長的訂單</button>` : ''}` : ''}
     <div class="msg ${st.msg ? st.msg[0] : ''}">${st.msg ? st.msg[1] : ''}</div>`;
 }
@@ -215,7 +215,7 @@ async function send(extra){
     ROWS = j.rows; closed = j.closed;
     if (st.kind === 'parent') {
       if (extra && extra.remove) { st.prow = null; st.msg = ['ok','已刪除這位家長的訂單']; }
-      else { st.prow = j.savedRow; st.msg = ['ok', `✓ 已送出！要繳 <b>${cost(st.d1,st.d2)} 元</b>，請交給負責的家長。截止前都可以回來修改。`]; }
+      else { st.prow = j.savedRow; st.msg = ['ok', `✓ 已送出！要繳 <b>${cost(st.d1,st.d2)} 元</b>，請交給曼妮媽媽。截止前都可以回來修改。`]; }
       store.set('b_prow', st.prow);
     } else st.msg = ['ok','✓ 已送出！截止前都可以回來修改。'];
     loadSel(); render();
