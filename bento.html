@@ -90,7 +90,7 @@ label.f{display:block;font-size:13px;color:var(--ink2);margin-top:10px}
     <li><b>學生和老師的便當由家長會贊助</b>，只有陪同家長要自行負擔</li>
     <li>截止前都可以回來修改</li>
   </ul>
-  <div class="dl" id="dl">截止時間：11/21（五）下午 5:00</div>
+  <div class="dl" id="dl">截止時間：11/20（五）下午 5:00</div>
 </div>
 
 <div id="app"><div class="loading">讀取訂單中…</div></div>
@@ -107,7 +107,7 @@ label.f{display:block;font-size:13px;color:var(--ink2);margin-top:10px}
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwi5dHIyCpiuWIjyVm_5F020jkwJLR0t_x-rqt30Xc1TbjWNHcDNZDl_Ji4ChT5WX3tWQ/exec';
 const MENU = [['排骨飯',120],['蝦卷飯',120],['焢肉飯',120],['魚排飯',120],['紅糟肉飯',120],['炸雞腿飯',130],['滷雞腿飯',130]];
 const PRICE = Object.fromEntries(MENU);
-const DEADLINE = new Date('2026-11-21T17:00:00+08:00').getTime();
+const DEADLINE = new Date('2026-11-20T17:00:00+08:00').getTime();
 const DAYS = [['d1','11/24（二）'],['d2','11/25（三）']];
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -132,10 +132,10 @@ function loadSel(){
 
 function dlText(){
   const t = DEADLINE - Date.now();
-  if (closed || t <= 0) { $('#dl').className = 'dl closed'; $('#dl').textContent = '已截止（11/21 下午 5:00），無法再修改。要更改請聯絡曼妮媽媽。'; return; }
+  if (closed || t <= 0) { $('#dl').className = 'dl closed'; $('#dl').textContent = '已截止（11/20 下午 5:00），無法再修改。要更改請聯絡曼妮媽媽。'; return; }
   const h = Math.floor(t/3600000), m = Math.floor(t%3600000/60000);
   $('#dl').className = 'dl';
-  $('#dl').textContent = `截止時間：11/21（五）下午 5:00・還有 ${h >= 24 ? Math.floor(h/24)+' 天 '+(h%24)+' 小時' : h+' 小時 '+m+' 分'}`;
+  $('#dl').textContent = `截止時間：11/20（五）下午 5:00・還有 ${h >= 24 ? Math.floor(h/24)+' 天 '+(h%24)+' 小時' : h+' 小時 '+m+' 分'}`;
 }
 
 function dayHTML(key, label){
