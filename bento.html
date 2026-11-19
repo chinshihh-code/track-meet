@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#B83A26">
+<title>訂便當｜田徑競賽</title>
+<style>
+:root{
+  --bg:#F6F3EE; --card:#FFFFFF; --ink:#1E1B18; --ink2:#5F5A54; --ink3:#9A948C;
+  --line:#E4DED5; --track:#B83A26; --track-bg:#F8E4DE; --track-ink:#7A2414;
+  --ok:#1E6B34; --ok-bg:#DDF2E2; --warn:#9B1C1C; --warn-bg:#FDE4E4; --soon:#8A5A00; --soon-bg:#FFF0CC;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#151311; --card:#211E1B; --ink:#F3EFEA; --ink2:#BDB6AD; --ink3:#857E76;
+    --line:#35302B; --track:#E2654D; --track-bg:#3A1F18; --track-ink:#F6B9AA;
+    --ok:#7FD597; --ok-bg:#163222; --warn:#F5A3A3; --warn-bg:#3A1717; --soon:#F5C66B; --soon-bg:#3A2D0E;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;font-size:16px;line-height:1.5;padding-bottom:env(safe-area-inset-bottom)}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:560px;margin:0 auto;padding:0 14px 48px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(10px + env(safe-area-inset-top)) 0 8px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+h1{font-size:20px;margin:0}
+.back{font-size:14px;color:var(--track);text-decoration:none;border:1.5px solid var(--track);border-radius:999px;padding:5px 12px;white-space:nowrap}
+.notice{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;font-size:14px;color:var(--ink2)}
+.notice b{color:var(--ink)}
+.notice ul{margin:6px 0 0;padding-left:18px}
+.dl{margin-top:10px;border-radius:12px;padding:10px 12px;font-size:15px;background:var(--soon-bg);color:var(--soon)}
+.dl.closed{background:var(--warn-bg);color:var(--warn)}
+h2{font-size:16px;margin:22px 2px 8px}
+.step{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--track);color:#fff;font-size:13px;margin-right:6px;vertical-align:1px}
+.seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{flex:1;border:0;background:transparent;color:var(--ink2);font:inherit;font-size:15px;padding:9px 4px;border-radius:9px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--track);color:#fff;font-weight:700}
+select,input[type=text]{width:100%;font:inherit;font-size:16px;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:8px}
+label.f{display:block;font-size:13px;color:var(--ink2);margin-top:10px}
+.day{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:10px}
+.dayh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.dayh b{font-size:16px}
+.dayh span{font-size:13px;color:var(--ink3)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.opt{border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:10px;font:inherit;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:6px;min-height:48px}
+.opt .p{font-size:13px;color:var(--ink2)}
+.opt[aria-pressed="true"]{border-color:var(--track);background:var(--track-bg);color:var(--track-ink);font-weight:700}
+.opt[aria-pressed="true"] .p{color:var(--track-ink)}
+.opt.none{grid-column:1 / -1;justify-content:center;color:var(--ink2)}
+.absent{text-align:center;color:var(--ink3);padding:12px;background:var(--bg);border-radius:10px}
+.sum{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-top:4px}
+.sum .amt{font-size:22px;font-weight:800}
+.submit{width:100%;margin-top:12px;border:0;border-radius:14px;background:var(--track);color:#fff;font:inherit;font-size:18px;font-weight:700;padding:14px;cursor:pointer}
+.submit:disabled{opacity:.5;cursor:not-allowed}
+.msg{margin-top:10px;border-radius:12px;padding:10px 12px;font-size:15px;display:none}
+.msg.ok{display:block;background:var(--ok-bg);color:var(--ok)}
+.msg.err{display:block;background:var(--warn-bg);color:var(--warn)}
+.mine{margin-top:8px;font-size:14px;color:var(--ink2)}
+.mine b{color:var(--ink)}
+.tot{display:grid;grid-template-columns:1fr auto auto;gap:4px 14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;font-size:14px}
+.tot .h{color:var(--ink3);font-size:12px}
+.tot .n{text-align:right;font-weight:700}
+.list{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.grp{font-size:12px;color:var(--ink3);padding:8px 14px 4px;background:var(--bg)}
+.li{display:grid;grid-template-columns:5.5em 1fr 1fr;gap:6px;padding:9px 14px;border-top:1px solid var(--line);font-size:14px;align-items:center}
+.li .nm{font-weight:700}
+.li .nm small{display:block;font-weight:400;color:var(--ink3);font-size:11px}
+.li .c{color:var(--ink)}
+.li .c.e{color:var(--ink3)}
+.li .c.x{color:var(--ink3);text-decoration:line-through}
+.lh{display:grid;grid-template-columns:5.5em 1fr 1fr;gap:6px;padding:8px 14px;font-size:12px;color:var(--ink3)}
+.search{margin:0 0 8px}
+.foot{font-size:12px;color:var(--ink3);text-align:center;margin-top:20px}
+.loading{text-align:center;color:var(--ink3);padding:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>🍱 訂便當</h1>
+  <a class="back" href="./">← 回賽程</a>
+</header>
+
+<div class="notice">
+  <b>訂便當說明</b>
+  <ul>
+    <li>價錢：排骨飯、蝦卷飯、焢肉飯、魚排飯、紅糟肉飯 <b>每個 120 元</b>；炸雞腿飯、滷雞腿飯 <b>每個 130 元</b></li>
+    <li><b>學生和老師的便當免費</b>，只有陪同家長的便當要付錢</li>
+    <li>截止前都可以回來修改</li>
+  </ul>
+  <div class="dl" id="dl">截止時間：11/21（五）下午 5:00</div>
+</div>
+
+<div id="app"><div class="loading">讀取訂單中…</div></div>
+
+<h2>大家的訂單</h2>
+<div class="tot" id="tot"></div>
+<div style="height:10px"></div>
+<input type="text" class="search" id="q" placeholder="搜尋名字">
+<div class="list" id="list"><div class="loading">讀取中…</div></div>
+<p class="foot">資料存在 Google 試算表・收費以負責家長通知為準</p>
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwi5dHIyCpiuWIjyVm_5F020jkwJLR0t_x-rqt30Xc1TbjWNHcDNZDl_Ji4ChT5WX3tWQ/exec';
+const MENU = [['排骨飯',120],['蝦卷飯',120],['焢肉飯',120],['魚排飯',120],['紅糟肉飯',120],['炸雞腿飯',130],['滷雞腿飯',130]];
+const PRICE = Object.fromEntries(MENU);
+const DEADLINE = new Date('2026-11-21T17:00:00+08:00').getTime();
+const DAYS = [['d1','11/24（二）'],['d2','11/25（三）']];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store = { get(k,d){ try{ const v=localStorage.getItem(k); return v===null?d:JSON.parse(v);}catch(e){return d;} }, set(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} } };
+
+let ROWS = [], closed = false;
+let st = { kind: store.get('b_kind','student'), who: store.get('b_who',''), prow: store.get('b_prow',null), pname:'', pnote:'', d1:'', d2:'', msg:null, busy:false };
+
+const isParent = r => r.role === '陪同家長';
+const isStudent = r => r.role.startsWith('學生');
+const students = () => ROWS.filter(isStudent);
+const teachers = () => ROWS.filter(r => r.role === '老師');
+const parents = () => ROWS.filter(r => isParent(r) && r.name.trim());
+const cost = (a,b) => (PRICE[a]||0) + (PRICE[b]||0);
+const current = () => st.kind === 'parent' ? ROWS.find(r => r.row === st.prow && isParent(r) && r.name.trim()) : ROWS.find(r => !isParent(r) && r.name === st.who);
+
+function loadSel(){
+  const r = current();
+  if (r){ st.d1 = r.d1 === '不出賽' ? '' : r.d1; st.d2 = r.d2 === '不出賽' ? '' : r.d2; if (isParent(r)){ st.pname = r.name; st.pnote = r.note; } }
+  else { st.d1 = ''; st.d2 = ''; if (st.kind === 'parent'){ st.pname=''; st.pnote=''; } }
+}
+
+function dlText(){
+  const t = DEADLINE - Date.now();
+  if (closed || t <= 0) { $('#dl').className = 'dl closed'; $('#dl').textContent = '已截止（11/21 下午 5:00），無法再修改。要更改請聯絡負責的家長。'; return; }
+  const h = Math.floor(t/3600000), m = Math.floor(t%3600000/60000);
+  $('#dl').className = 'dl';
+  $('#dl').textContent = `截止時間：11/21（五）下午 5:00・還有 ${h >= 24 ? Math.floor(h/24)+' 天 '+(h%24)+' 小時' : h+' 小時 '+m+' 分'}`;
+}
+
+function dayHTML(key, label){
+  const r = current();
+  const absent = r && r[key] === '不出賽';
+  if (absent) return `<div class="day"><div class="dayh"><b>${label}</b></div><div class="absent">這天不出賽，不用訂</div></div>`;
+  const v = st[key];
+  return `<div class="day"><div class="dayh"><b>${label}</b><span>${v ? '已選：'+esc(v) : '請選一個'}</span></div><div class="grid">${
+    MENU.map(([n,p]) => `<button class="opt" data-day="${key}" data-v="${n}" aria-pressed="${v===n}"><span>${n}</span><span class="p">${p} 元</span></button>`).join('')
+  }<button class="opt none" data-day="${key}" data-v="不需要" aria-pressed="${v==='不需要'}">這天不需要便當</button></div></div>`;
+}
+
+function renderApp(){
+  if (!ROWS.length) return;
+  const isP = st.kind === 'parent';
+  let who = '';
+  if (st.kind === 'student') {
+    const f = students().filter(r => r.role.includes('女')), m = students().filter(r => r.role.includes('男'));
+    who = `<select id="who"><option value="">請選孩子的名字</option><optgroup label="女生">${f.map(r=>`<option${r.name===st.who?' selected':''}>${esc(r.name)}</option>`).join('')}</optgroup><optgroup label="男生">${m.map(r=>`<option${r.name===st.who?' selected':''}>${esc(r.name)}</option>`).join('')}</optgroup></select>`;
+  } else if (st.kind === 'teacher') {
+    who = `<select id="who"><option value="">請選老師</option>${teachers().map(r=>`<option${r.name===st.who?' selected':''}>${esc(r.name)}</option>`).join('')}</select>`;
+  } else {
+    who = `<select id="prow"><option value="">＋ 新增一位陪同家長</option>${parents().map(r=>`<option value="${r.row}"${r.row===st.prow?' selected':''}>修改：${esc(r.name)}${r.note?'（'+esc(r.note)+'）':''}</option>`).join('')}</select>
+      <label class="f">家長姓名</label><input type="text" id="pname" value="${esc(st.pname)}" placeholder="例：王小美">
+      <label class="f">是哪位選手的家長？</label><select id="pnote"><option value="">請選孩子</option>${students().map(r=>{const o=r.name+'的家長';return `<option${st.pnote===o?' selected':''} value="${esc(o)}">${esc(r.name)}</option>`;}).join('')}</select>`;
+  }
+  const ready = isP ? true : !!current();
+  const cur = current();
+  const amount = isP ? cost(st.d1, st.d2) : 0;
+  const can = !closed && Date.now() < DEADLINE && !st.busy && (isP ? st.pname.trim() && st.pnote : !!cur);
+  $('#app').innerHTML = `
+    <h2><span class="step">1</span>誰的便當？</h2>
+    <div class="seg" role="group">${[['student','選手'],['teacher','老師'],['parent','陪同家長']].map(([k,l])=>`<button data-kind="${k}" aria-pressed="${st.kind===k}">${l}</button>`).join('')}</div>
+    ${who}
+    ${cur && !isP ? `<div class="mine">目前的訂單：11/24 <b>${esc(cur.d1||'還沒選')}</b>・11/25 <b>${esc(cur.d2||'還沒選')}</b></div>` : ''}
+    ${ready ? `<h2><span class="step">2</span>選便當</h2>${DAYS.map(([k,l])=>dayHTML(k,l)).join('')}
+    <div class="sum"><span>${isP ? '要繳的金額' : '學生、老師免費'}</span><span class="amt num">${isP ? amount+' 元' : '0 元'}</span></div>
+    <button class="submit" id="submit" ${can?'':'disabled'}>${st.busy ? '送出中…' : (cur ? '更新訂單' : '送出訂單')}</button>
+    ${isP && cur ? `<button class="back" id="remove" style="display:block;margin:10px auto 0;background:none;cursor:pointer;font:inherit;font-size:14px">刪除這位家長的訂單</button>` : ''}` : ''}
+    <div class="msg ${st.msg ? st.msg[0] : ''}">${st.msg ? st.msg[1] : ''}</div>`;
+}
+
+function renderList(){
+  const q = ($('#q').value || '').trim();
+  const show = r => !q || r.name.includes(q) || r.note.includes(q);
+  const cell = v => v === '不出賽' ? `<span class="c x">不出賽</span>` : v ? `<span class="c">${esc(v)}</span>` : `<span class="c e">還沒選</span>`;
+  const grp = (title, arr) => arr.filter(show).length ? `<div class="grp">${title}</div>` + arr.filter(show).map(r => `<div class="li"><span class="nm">${esc(r.name)}${isParent(r) && r.note ? `<small>${esc(r.note)}</small>` : ''}</span>${cell(r.d1)}${cell(r.d2)}</div>`).join('') : '';
+  $('#list').innerHTML = `<div class="lh"><span>姓名</span><span>11/24</span><span>11/25</span></div>` +
+    (grp('選手', students()) + grp('老師', teachers()) + grp('陪同家長', parents()) || `<div class="loading">找不到「${esc(q)}」</div>`);
+  const cnt = (k, n) => ROWS.filter(r => r[k] === n).length;
+  $('#tot').innerHTML = `<span class="h">便當</span><span class="h">11/24</span><span class="h">11/25</span>` +
+    MENU.map(([n]) => `<span>${n}</span><span class="n num">${cnt('d1',n)}</span><span class="n num">${cnt('d2',n)}</span>`).join('') +
+    `<span style="color:var(--ink3)">還沒選</span><span class="n num" style="color:var(--ink3)">${ROWS.filter(r=>!isParent(r)&&!r.d1).length}</span><span class="n num" style="color:var(--ink3)">${ROWS.filter(r=>!isParent(r)&&!r.d2).length}</span>`;
+}
+
+function render(){ dlText(); renderApp(); renderList(); }
+
+async function load(){
+  if (SCRIPT_URL.startsWith('__')) { $('#app').innerHTML = '<div class="msg err" style="display:block">訂便當系統還沒設定完成。</div>'; return; }
+  try{
+    const r = await fetch(SCRIPT_URL + '?t=' + Date.now());
+    const j = await r.json(); ROWS = j.rows; closed = j.closed;
+    loadSel(); render();
+  }catch(e){ $('#app').innerHTML = '<div class="msg err" style="display:block">讀取失敗，請檢查網路後重新整理。</div>'; }
+}
+
+async function send(extra){
+  st.busy = true; st.msg = null; renderApp();
+  const body = st.kind === 'parent'
+    ? { kind:'parent', row: st.prow || null, name: st.pname.trim(), note: st.pnote, d1: st.d1, d2: st.d2, ...extra }
+    : { kind: st.kind, name: st.who, d1: st.d1, d2: st.d2 };
+  try{
+    const r = await fetch(SCRIPT_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(body) });
+    const j = await r.json();
+    st.busy = false;
+    if (!j.ok) { st.msg = ['err', esc(j.error || '送出失敗')]; renderApp(); return; }
+    ROWS = j.rows; closed = j.closed;
+    if (st.kind === 'parent') {
+      if (extra && extra.remove) { st.prow = null; st.msg = ['ok','已刪除這位家長的訂單']; }
+      else { st.prow = j.savedRow; st.msg = ['ok', `✓ 已送出！要繳 <b>${cost(st.d1,st.d2)} 元</b>，請交給負責的家長。截止前都可以回來修改。`]; }
+      store.set('b_prow', st.prow);
+    } else st.msg = ['ok','✓ 已送出！截止前都可以回來修改。'];
+    loadSel(); render();
+  }catch(e){ st.busy = false; st.msg = ['err','送出失敗，請檢查網路再試一次']; renderApp(); }
+}
+
+document.addEventListener('click', e => {
+  const k = e.target.closest('[data-kind]');
+  if (k) { st.kind = k.dataset.kind; store.set('b_kind', st.kind); st.msg = null; if (st.kind==='parent') st.prow = store.get('b_prow', null); else st.who = ''; loadSel(); renderApp(); return; }
+  const o = e.target.closest('.opt');
+  if (o) { st[o.dataset.day] = st[o.dataset.day] === o.dataset.v ? '' : o.dataset.v; st.msg = null; renderApp(); return; }
+  if (e.target.closest('#submit')) {
+    const cur = current();
+    const need = DAYS.filter(([k]) => !(cur && cur[k] === '不出賽') && !st[k]);
+    if (need.length && !confirm(`${need.map(d=>d[1]).join('、')} 還沒選便當，確定要送出嗎？`)) return;
+    send(); return;
+  }
+  if (e.target.closest('#remove')) { if (confirm('確定要刪除這位家長的訂單嗎？')) send({ remove: true }); return; }
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'who') { st.who = e.target.value; store.set('b_who', st.who); st.msg = null; loadSel(); renderApp(); }
+  if (e.target.id === 'prow') { st.prow = e.target.value ? +e.target.value : null; store.set('b_prow', st.prow); st.msg = null; loadSel(); renderApp(); }
+  if (e.target.id === 'pnote') { st.pnote = e.target.value; renderApp(); }
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'pname') { st.pname = e.target.value; const b = $('#submit'); if (b) b.disabled = !(st.pname.trim() && st.pnote) || closed; }
+  if (e.target.id === 'q') renderList();
+});
+load();
+setInterval(dlText, 30000);
+</script>
+</body>
+</html>
