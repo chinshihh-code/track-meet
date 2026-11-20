@@ -103,7 +103,9 @@ const MINE = [
   ['運動服'], ['釘鞋'], ['乾的衣服、毛巾'], ['雨傘或輕便雨衣'], ['水壺'], ['塑膠袋'],
   ['悠遊卡', '松山新店線小巨蛋站 2 號出口出來'], ['學生證'], ['帽子', '怕下雨'], ['健保卡（小黃卡）']
 ];
-const HELP = ['肌內效貼布', '吹風機', '露營椅', '瑜珈墊', '熱量補給、心靈補給'];
+const HELP = ['肌內效貼布', '吹風機', '瑜珈墊', '熱量補給'];
+const HINT = { '熱量補給': '運動飲料由家長會贊助；可以帶能量棒、小點心、水果等，請寫要帶什麼' };
+const FOOD = '熱量補給';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const store = { get(k,d){ try{ const v=localStorage.getItem(k); return v===null?d:JSON.parse(v);}catch(e){return d;} }, set(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} } };
@@ -132,7 +134,7 @@ renderMine();
 /* 家長協助 */
 let LIST = [], STUDENTS = [], openItem = null, busy = false, msg = {};
 let mineIds = store.get('prep_mine', []);
-let draftItem = '';
+let draftItem = '', draftNote = '';
 let last = store.get('prep_last', { name: '', child: '' });
 
 function formHTML(item){
@@ -143,7 +145,7 @@ function formHTML(item){
         <div><label for="f-name">家長姓名</label><input id="f-name" value="${esc(last.name)}" placeholder="例：王小美"></div>
         <div><label for="f-child">是哪位選手的家長</label><select id="f-child"><option value="">請選孩子</option>${STUDENTS.map(n => `<option${n === last.child ? ' selected' : ''}>${esc(n)}</option>`).join('')}</select></div>
         <div><label for="f-days">哪幾天會帶</label><select id="f-days"><option>兩天</option><option>11/24</option><option>11/25</option></select></div>
-        <div><label for="f-note">備註（可不填）</label><input id="f-note" maxlength="60" placeholder="例：2 盒、帶 1 台、5 張"></div>
+        ${item === FOOD ? `<div><label for="f-note">要帶什麼（必填）</label><input id="f-note" maxlength="60" value="${esc(draftNote)}" placeholder="例：能量棒 1 盒、小餅乾、香蕉"></div>` : `<div><label for="f-note">備註（可不填）</label><input id="f-note" maxlength="60" value="${esc(draftNote)}" placeholder="例：2 盒、帶 1 台"></div>`}
         <div class="row"><button class="ghost" data-close>取消</button><button class="go" data-send="${esc(item)}"${busy ? ' disabled' : ''}>${busy ? '登記中…' : '登記'}</button></div>
       </div>`;
 }
@@ -158,6 +160,7 @@ function renderHelp(){
     const form = openItem === item ? formHTML(item) : `<button class="add" data-open="${esc(item)}">＋ 我可以帶</button>`;
     return `<div class="item">
       <div class="ih"><b>${esc(item)}</b>${regs.length ? `<span class="badge have">${regs.length} 人會帶</span>` : `<span class="badge need">還缺人</span>`}</div>
+      ${HINT[item] ? `<p class="sub" style="margin:4px 0 0">${esc(HINT[item])}</p>` : ''}
       ${regs.length ? `<ul class="who">${regs.map(r => `<li><span>${esc(r.name)}${r.child ? `<small>・${esc(r.child)}的家長</small>` : ''}<small>・${esc(r.days)}${r.note ? '・' + esc(r.note) : ''}</small></span>${mineIds.includes(r.id) ? `<button class="cancel" data-remove="${esc(r.id)}">取消登記</button>` : ''}</li>`).join('')}</ul>` : ''}
       ${msg[item] ? `<div class="msg ${msg[item][0]}" style="margin-top:8px">${msg[item][1]}</div>` : ''}
       ${form}
@@ -181,12 +184,14 @@ async function post(body){
 
 document.addEventListener('click', async e => {
   const o = e.target.closest('[data-open]');
-  if (o) { openItem = o.dataset.open; msg = {}; renderHelp(); const f = $('#f-name'); if (f && !f.value) f.focus(); return; }
+  if (o) { openItem = o.dataset.open; msg = {}; draftNote = ''; renderHelp(); const f = $('#f-name'); if (f && !f.value) f.focus(); return; }
   if (e.target.closest('[data-close]')) { openItem = null; renderHelp(); return; }
   const s = e.target.closest('[data-send]');
   if (s) {
     const key = s.dataset.send, item = key === '__new__' ? ($('#f-item').value || '').trim() : key, name = $('#f-name').value.trim(), child = $('#f-child').value, days = $('#f-days').value, note = $('#f-note').value.trim();
     if (key === '__new__') draftItem = item;
+    draftNote = note;
+    if (key === FOOD && !note) { msg[key] = ['err', '請寫要帶什麼，例如能量棒 1 盒']; last = { name, child }; renderHelp(); return; }
     if (!item) { msg[key] = ['err', '請填寫要帶什麼']; renderHelp(); return; }
     if (!name) { msg[key] = ['err', '請填寫家長姓名']; last = { name, child }; renderHelp(); return; }
     if (!child) { msg[key] = ['err', '請選是哪位選手的家長']; last = { name, child }; renderHelp(); return; }
@@ -197,7 +202,7 @@ document.addEventListener('click', async e => {
       busy = false;
       if (!j.ok) { msg[key] = ['err', esc(j.error || '登記失敗')]; renderHelp(); return; }
       LIST = j.help; mineIds = [...mineIds, j.savedId]; store.set('prep_mine', mineIds);
-      openItem = null; draftItem = ''; msg = {}; msg[item] = ['ok', '✓ 已登記，謝謝你！']; renderHelp();
+      openItem = null; draftItem = ''; draftNote = ''; msg = {}; msg[item] = ['ok', '✓ 已登記，謝謝你！']; renderHelp();
     }catch(err){ busy = false; msg[key] = ['err', '登記失敗，請檢查網路再試一次']; renderHelp(); }
     return;
   }
