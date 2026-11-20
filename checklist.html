@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#B83A26">
+<title>準備清單｜田徑競賽</title>
+<style>
+:root{
+  --bg:#F6F3EE; --card:#FFFFFF; --ink:#1E1B18; --ink2:#5F5A54; --ink3:#9A948C;
+  --line:#E4DED5; --track:#B83A26; --track-bg:#F8E4DE; --track-ink:#7A2414;
+  --ok:#1E6B34; --ok-bg:#DDF2E2; --warn:#9B1C1C; --warn-bg:#FDE4E4;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#151311; --card:#211E1B; --ink:#F3EFEA; --ink2:#BDB6AD; --ink3:#857E76;
+    --line:#35302B; --track:#E2654D; --track-bg:#3A1F18; --track-ink:#F6B9AA;
+    --ok:#7FD597; --ok-bg:#163222; --warn:#F5A3A3; --warn-bg:#3A1717;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;font-size:16px;line-height:1.5;padding-bottom:env(safe-area-inset-bottom)}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:560px;margin:0 auto;padding:0 14px 48px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(10px + env(safe-area-inset-top)) 0 8px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+h1{font-size:20px;margin:0}
+.back{font-size:14px;color:var(--track);text-decoration:none;border:1.5px solid var(--track);border-radius:999px;padding:5px 12px;white-space:nowrap;background:none;font-family:inherit;cursor:pointer}
+h2{font-size:17px;margin:22px 2px 4px}
+.sub{font-size:13px;color:var(--ink2);margin:0 2px 10px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.prog{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.bar{flex:1;height:8px;border-radius:99px;background:var(--bg);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .2s}
+.prog b{font-size:14px;white-space:nowrap}
+.ck{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-top:1px solid var(--line);cursor:pointer;user-select:none}
+.ck:first-of-type{border-top:0}
+.ck input{appearance:none;flex:none;width:24px;height:24px;border:2px solid var(--ink3);border-radius:7px;margin:0;display:grid;place-items:center;cursor:pointer;background:var(--card)}
+.ck input:checked{background:var(--ok);border-color:var(--ok)}
+.ck input:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.ck input:focus-visible{outline:2px solid var(--track);outline-offset:2px}
+.ck span{font-size:16px}
+.ck small{display:block;color:var(--ink2);font-size:13px}
+.ck.done span{color:var(--ink3);text-decoration:line-through}
+.ck.done small{text-decoration:none}
+.foot{display:flex;justify-content:flex-end;padding:10px 14px;border-top:1px solid var(--line)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:10px}
+.ih{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ih b{font-size:16px}
+.badge{font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.need{background:var(--warn-bg);color:var(--warn)}
+.have{background:var(--ok-bg);color:var(--ok)}
+.who{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+.who li{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:14px;background:var(--bg);border-radius:10px;padding:7px 10px}
+.who li small{color:var(--ink2)}
+.cancel{font:inherit;font-size:12px;border:0;background:none;color:var(--track);text-decoration:underline;cursor:pointer;white-space:nowrap}
+.add{margin-top:10px;width:100%;font:inherit;font-size:15px;font-weight:700;border:1.5px dashed var(--track);background:transparent;color:var(--track);border-radius:12px;padding:10px;cursor:pointer}
+.form{margin-top:10px;display:grid;gap:8px;background:var(--bg);border-radius:12px;padding:12px}
+.form label{font-size:13px;color:var(--ink2)}
+.form input,.form select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:4px}
+.row{display:flex;gap:8px}
+.row button{flex:1}
+.go{font:inherit;font-size:16px;font-weight:700;border:0;border-radius:12px;background:var(--track);color:#fff;padding:11px;cursor:pointer}
+.go:disabled{opacity:.5;cursor:not-allowed}
+.ghost{font:inherit;font-size:15px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink2);padding:11px;cursor:pointer}
+.msg{font-size:14px;border-radius:10px;padding:8px 10px}
+.msg.ok{background:var(--ok-bg);color:var(--ok)}
+.msg.err{background:var(--warn-bg);color:var(--warn)}
+.loading{text-align:center;color:var(--ink3);padding:20px}
+.end{font-size:12px;color:var(--ink3);text-align:center;margin-top:20px}
+.confirm{display:none;gap:6px;align-items:center;font-size:12px}
+.confirm.on{display:flex}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>🎒 準備清單</h1>
+  <a class="back" href="./">← 回賽程</a>
+</header>
+
+<h2>學生攜帶</h2>
+<p class="sub">家長提醒孩子自己準備，收好一樣就勾一樣（只存在這支手機）</p>
+<div class="box" id="mine">
+  <div class="prog"><div class="bar"><i id="barfill"></i></div><b class="num" id="progtxt">0 / 10</b></div>
+  <div id="cklist"></div>
+  <div class="foot">
+    <span class="confirm" id="rsconfirm">確定全部取消勾選？<button class="cancel" id="rsyes">確定</button><button class="cancel" id="rsno">不要</button></span>
+    <button class="cancel" id="reset">重新開始</button>
+  </div>
+</div>
+
+<h2>家長協助</h2>
+<p class="sub">這些需要家長一起準備，可以幫忙帶的請按「我可以帶」登記，大家都看得到</p>
+<div id="help"><div class="loading">讀取登記中…</div></div>
+<p class="end">登記資料存在 Google 試算表・有問題請找曼妮媽媽</p>
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwi5dHIyCpiuWIjyVm_5F020jkwJLR0t_x-rqt30Xc1TbjWNHcDNZDl_Ji4ChT5WX3tWQ/exec';
+const MINE = [
+  ['運動服'], ['釘鞋'], ['乾的衣服、毛巾'], ['雨傘或輕便雨衣'], ['水壺'], ['塑膠袋'],
+  ['悠遊卡', '松山新店線小巨蛋站 2 號出口出來'], ['學生證'], ['帽子', '怕下雨'], ['健保卡（小黃卡）']
+];
+const HELP = ['肌內效貼布', '吹風機', '露營椅', '瑜珈墊', '熱量補給、心靈補給'];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store = { get(k,d){ try{ const v=localStorage.getItem(k); return v===null?d:JSON.parse(v);}catch(e){return d;} }, set(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} } };
+
+/* 學生攜帶 */
+let checked = store.get('prep_checked', []);
+function renderMine(){
+  $('#cklist').innerHTML = MINE.map(([t, n], i) => {
+    const on = checked.includes(i);
+    return `<label class="ck${on ? ' done' : ''}"><input type="checkbox" data-i="${i}"${on ? ' checked' : ''}><div><span>${esc(t)}</span>${n ? `<small>${esc(n)}</small>` : ''}</div></label>`;
+  }).join('');
+  const k = checked.length;
+  $('#progtxt').textContent = k === MINE.length ? '全部準備好了 ✓' : `${k} / ${MINE.length}`;
+  $('#barfill').style.width = (k / MINE.length * 100) + '%';
+}
+$('#cklist').addEventListener('change', e => {
+  const i = +e.target.dataset.i;
+  checked = e.target.checked ? [...new Set([...checked, i])] : checked.filter(x => x !== i);
+  store.set('prep_checked', checked); renderMine();
+});
+$('#reset').addEventListener('click', () => { $('#rsconfirm').classList.add('on'); $('#reset').style.display = 'none'; });
+$('#rsno').addEventListener('click', () => { $('#rsconfirm').classList.remove('on'); $('#reset').style.display = ''; });
+$('#rsyes').addEventListener('click', () => { checked = []; store.set('prep_checked', checked); $('#rsconfirm').classList.remove('on'); $('#reset').style.display = ''; renderMine(); });
+renderMine();
+
+/* 家長協助 */
+let LIST = [], STUDENTS = [], openItem = null, busy = false, msg = {};
+let mineIds = store.get('prep_mine', []);
+let last = store.get('prep_last', { name: '', child: '' });
+
+function renderHelp(){
+  $('#help').innerHTML = HELP.map(item => {
+    const regs = LIST.filter(r => r.item === item);
+    const form = openItem === item ? `
+      <div class="form">
+        <div><label for="f-name">家長姓名</label><input id="f-name" value="${esc(last.name)}" placeholder="例：王小美"></div>
+        <div><label for="f-child">是哪位選手的家長</label><select id="f-child"><option value="">請選孩子</option>${STUDENTS.map(n => `<option${n === last.child ? ' selected' : ''}>${esc(n)}</option>`).join('')}</select></div>
+        <div><label for="f-days">哪幾天會帶</label><select id="f-days"><option>兩天</option><option>11/24</option><option>11/25</option></select></div>
+        <div><label for="f-note">備註（可不填）</label><input id="f-note" maxlength="60" placeholder="例：2 盒、帶 1 台、5 張"></div>
+        <div class="row"><button class="ghost" data-close>取消</button><button class="go" data-send="${esc(item)}"${busy ? ' disabled' : ''}>${busy ? '登記中…' : '登記'}</button></div>
+      </div>` : `<button class="add" data-open="${esc(item)}">＋ 我可以帶</button>`;
+    return `<div class="item">
+      <div class="ih"><b>${esc(item)}</b>${regs.length ? `<span class="badge have">${regs.length} 人會帶</span>` : `<span class="badge need">還缺人</span>`}</div>
+      ${regs.length ? `<ul class="who">${regs.map(r => `<li><span>${esc(r.name)}${r.child ? `<small>・${esc(r.child)}的家長</small>` : ''}<small>・${esc(r.days)}${r.note ? '・' + esc(r.note) : ''}</small></span>${mineIds.includes(r.id) ? `<button class="cancel" data-remove="${esc(r.id)}">取消登記</button>` : ''}</li>`).join('')}</ul>` : ''}
+      ${msg[item] ? `<div class="msg ${msg[item][0]}" style="margin-top:8px">${msg[item][1]}</div>` : ''}
+      ${form}
+    </div>`;
+  }).join('');
+}
+
+async function load(){
+  try{
+    const j = await (await fetch(SCRIPT_URL + '?t=' + Date.now())).json();
+    LIST = j.help || [];
+    STUDENTS = (j.rows || []).filter(r => r.role.startsWith('學生')).map(r => r.name);
+    renderHelp();
+  }catch(e){ $('#help').innerHTML = '<div class="msg err">讀取失敗，請檢查網路後重新整理。</div>'; }
+}
+
+async function post(body){
+  const r = await fetch(SCRIPT_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(body) });
+  return r.json();
+}
+
+document.addEventListener('click', async e => {
+  const o = e.target.closest('[data-open]');
+  if (o) { openItem = o.dataset.open; msg = {}; renderHelp(); const f = $('#f-name'); if (f && !f.value) f.focus(); return; }
+  if (e.target.closest('[data-close]')) { openItem = null; renderHelp(); return; }
+  const s = e.target.closest('[data-send]');
+  if (s) {
+    const item = s.dataset.send, name = $('#f-name').value.trim(), child = $('#f-child').value, days = $('#f-days').value, note = $('#f-note').value.trim();
+    if (!name) { msg[item] = ['err', '請填寫家長姓名']; last = { name, child }; renderHelp(); return; }
+    if (!child) { msg[item] = ['err', '請選是哪位選手的家長']; last = { name, child }; renderHelp(); return; }
+    last = { name, child }; store.set('prep_last', last);
+    busy = true; renderHelp();
+    try{
+      const j = await post({ kind:'help', item, name, child, days, note });
+      busy = false;
+      if (!j.ok) { msg[item] = ['err', esc(j.error || '登記失敗')]; renderHelp(); return; }
+      LIST = j.help; mineIds = [...mineIds, j.savedId]; store.set('prep_mine', mineIds);
+      openItem = null; msg[item] = ['ok', '✓ 已登記，謝謝你！']; renderHelp();
+    }catch(err){ busy = false; msg[item] = ['err', '登記失敗，請檢查網路再試一次']; renderHelp(); }
+    return;
+  }
+  const rm = e.target.closest('[data-remove]');
+  if (rm) {
+    const id = rm.dataset.remove, r0 = LIST.find(x => x.id === id);
+    if (rm.dataset.armed !== '1') { rm.dataset.armed = '1'; rm.textContent = '再按一次確定取消'; setTimeout(() => { if (rm.isConnected) { rm.dataset.armed = ''; rm.textContent = '取消登記'; } }, 3000); return; }
+    rm.textContent = '取消中…';
+    try{
+      const j = await post({ kind:'help', remove: true, id });
+      LIST = j.help || LIST.filter(x => x.id !== id); mineIds = mineIds.filter(x => x !== id); store.set('prep_mine', mineIds);
+      msg = {}; if (r0) msg[r0.item] = ['ok', '已取消登記']; renderHelp();
+    }catch(err){ rm.textContent = '取消失敗，再試一次'; }
+  }
+});
+if (SCRIPT_URL.startsWith('__')) $('#help').innerHTML = '<div class="msg err">登記系統還沒設定完成。</div>'; else load();
+</script>
+</body>
+</html>
