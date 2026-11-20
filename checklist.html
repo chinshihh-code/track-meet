@@ -83,7 +83,7 @@ h2{font-size:17px;margin:22px 2px 4px}
 <h2>學生攜帶</h2>
 <p class="sub">家長提醒孩子自己準備，收好一樣就勾一樣（只存在這支手機）</p>
 <div class="box" id="mine">
-  <div class="prog"><div class="bar"><i id="barfill"></i></div><b class="num" id="progtxt">0 / 10</b></div>
+  <div class="prog"><div class="bar"><i id="barfill"></i></div><b class="num" id="progtxt">0 / 11</b></div>
   <div id="cklist"></div>
   <div class="foot">
     <span class="confirm" id="rsconfirm">確定全部取消勾選？<button class="cancel" id="rsyes">確定</button><button class="cancel" id="rsno">不要</button></span>
@@ -100,18 +100,20 @@ h2{font-size:17px;margin:22px 2px 4px}
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwi5dHIyCpiuWIjyVm_5F020jkwJLR0t_x-rqt30Xc1TbjWNHcDNZDl_Ji4ChT5WX3tWQ/exec';
 const MINE = [
-  ['運動服'], ['釘鞋'], ['乾的衣服、毛巾'], ['雨傘或輕便雨衣'], ['水壺'], ['塑膠袋'],
+  ['運動服'], ['釘鞋'], ['乾的衣服、毛巾'], ['雨傘或輕便雨衣'], ['水壺'], ['保溫瓶'], ['塑膠袋'],
   ['悠遊卡', '松山新店線小巨蛋站 2 號出口出來'], ['學生證'], ['帽子', '怕下雨'], ['健保卡（小黃卡）']
 ];
 const HELP = ['肌內效貼布', '吹風機', '瑜珈墊', '熱量補給'];
 const HINT = { '熱量補給': '運動飲料由家長會贊助；可以帶能量棒、小點心、水果等，請寫要帶什麼' };
 const FOOD = '熱量補給';
+const UNIT = { '肌內效貼布': '卷', '吹風機': '台', '瑜珈墊': '片' };
+const unitOf = it => UNIT[it] || '個';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const store = { get(k,d){ try{ const v=localStorage.getItem(k); return v===null?d:JSON.parse(v);}catch(e){return d;} }, set(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} } };
 
 /* 學生攜帶 */
-let checked = store.get('prep_checked', []);
+let checked = store.get('prep_checked2', []);
 function renderMine(){
   $('#cklist').innerHTML = MINE.map(([t, n], i) => {
     const on = checked.includes(i);
@@ -124,11 +126,11 @@ function renderMine(){
 $('#cklist').addEventListener('change', e => {
   const i = +e.target.dataset.i;
   checked = e.target.checked ? [...new Set([...checked, i])] : checked.filter(x => x !== i);
-  store.set('prep_checked', checked); renderMine();
+  store.set('prep_checked2', checked); renderMine();
 });
 $('#reset').addEventListener('click', () => { $('#rsconfirm').classList.add('on'); $('#reset').style.display = 'none'; });
 $('#rsno').addEventListener('click', () => { $('#rsconfirm').classList.remove('on'); $('#reset').style.display = ''; });
-$('#rsyes').addEventListener('click', () => { checked = []; store.set('prep_checked', checked); $('#rsconfirm').classList.remove('on'); $('#reset').style.display = ''; renderMine(); });
+$('#rsyes').addEventListener('click', () => { checked = []; store.set('prep_checked2', checked); $('#rsconfirm').classList.remove('on'); $('#reset').style.display = ''; renderMine(); });
 renderMine();
 
 /* 家長協助 */
@@ -138,14 +140,13 @@ let draftItem = '', draftNote = '';
 let last = store.get('prep_last', { name: '', child: '' });
 
 function formHTML(item){
-  const isNew = item === '__new__';
+  const isNew = item === '__new__', food = item === FOOD;
   return `
       <div class="form">
         ${isNew ? `<div><label for="f-item">要帶什麼</label><input id="f-item" maxlength="20" value="${esc(draftItem)}" placeholder="例：冰塊、防曬乳、延長線"></div>` : ''}
-        <div><label for="f-name">家長姓名</label><input id="f-name" value="${esc(last.name)}" placeholder="例：王小美"></div>
         <div><label for="f-child">是哪位選手的家長</label><select id="f-child"><option value="">請選孩子</option>${STUDENTS.map(n => `<option${n === last.child ? ' selected' : ''}>${esc(n)}</option>`).join('')}</select></div>
-        <div><label for="f-days">哪幾天會帶</label><select id="f-days"><option>兩天</option><option>11/24</option><option>11/25</option></select></div>
-        ${item === FOOD ? `<div><label for="f-note">要帶什麼（必填）</label><input id="f-note" maxlength="60" value="${esc(draftNote)}" placeholder="例：能量棒 1 盒、小餅乾、香蕉"></div>` : `<div><label for="f-note">備註（可不填）</label><input id="f-note" maxlength="60" value="${esc(draftNote)}" placeholder="例：2 盒、帶 1 台"></div>`}
+        ${food ? `<div><label for="f-note">要帶什麼</label><input id="f-note" maxlength="40" value="${esc(draftNote)}" placeholder="例：能量棒 1 盒、小餅乾、香蕉"></div>`
+               : `<div><label for="f-note">數量（${isNew ? '個' : unitOf(item)}）</label><input id="f-note" type="number" inputmode="numeric" min="1" max="99" value="${esc(draftNote || '1')}"></div>`}
         <div class="row"><button class="ghost" data-close>取消</button><button class="go" data-send="${esc(item)}"${busy ? ' disabled' : ''}>${busy ? '登記中…' : '登記'}</button></div>
       </div>`;
 }
@@ -159,9 +160,9 @@ function renderHelp(){
     const regs = LIST.filter(r => r.item === item);
     const form = openItem === item ? formHTML(item) : `<button class="add" data-open="${esc(item)}">＋ 我可以帶</button>`;
     return `<div class="item">
-      <div class="ih"><b>${esc(item)}</b>${regs.length ? `<span class="badge have">${regs.length} 人會帶</span>` : `<span class="badge need">還缺人</span>`}</div>
+      <div class="ih"><b>${esc(item)}</b>${!regs.length ? `<span class="badge need">還缺人</span>` : item === FOOD ? `<span class="badge have">${regs.length} 位家長會帶</span>` : `<span class="badge have">共 ${regs.reduce((t, r) => t + (parseInt(r.note, 10) || 1), 0)} ${unitOf(item)}</span>`}</div>
       ${HINT[item] ? `<p class="sub" style="margin:4px 0 0">${esc(HINT[item])}</p>` : ''}
-      ${regs.length ? `<ul class="who">${regs.map(r => `<li><span>${esc(r.name)}${r.child ? `<small>・${esc(r.child)}的家長</small>` : ''}<small>・${esc(r.days)}${r.note ? '・' + esc(r.note) : ''}</small></span>${mineIds.includes(r.id) ? `<button class="cancel" data-remove="${esc(r.id)}">取消登記</button>` : ''}</li>`).join('')}</ul>` : ''}
+      ${regs.length ? `<ul class="who">${regs.map(r => `<li><span>${item === FOOD ? esc(r.note) : '+' + (parseInt(r.note, 10) || 1) + ' ' + unitOf(item)}<small>・${esc(r.child || r.name)}的家長</small></span>${mineIds.includes(r.id) ? `<button class="cancel" data-remove="${esc(r.id)}">取消登記</button>` : ''}</li>`).join('')}</ul>` : ''}
       ${msg[item] ? `<div class="msg ${msg[item][0]}" style="margin-top:8px">${msg[item][1]}</div>` : ''}
       ${form}
     </div>`;
@@ -184,18 +185,19 @@ async function post(body){
 
 document.addEventListener('click', async e => {
   const o = e.target.closest('[data-open]');
-  if (o) { openItem = o.dataset.open; msg = {}; draftNote = ''; renderHelp(); const f = $('#f-name'); if (f && !f.value) f.focus(); return; }
+  if (o) { openItem = o.dataset.open; msg = {}; draftNote = ''; renderHelp(); const f = $('#f-child'); if (f && !f.value) f.focus(); return; }
   if (e.target.closest('[data-close]')) { openItem = null; renderHelp(); return; }
   const s = e.target.closest('[data-send]');
   if (s) {
-    const key = s.dataset.send, item = key === '__new__' ? ($('#f-item').value || '').trim() : key, name = $('#f-name').value.trim(), child = $('#f-child').value, days = $('#f-days').value, note = $('#f-note').value.trim();
+    const key = s.dataset.send, item = key === '__new__' ? ($('#f-item').value || '').trim() : key, child = $('#f-child').value, note = ($('#f-note').value || '').trim();
     if (key === '__new__') draftItem = item;
-    draftNote = note;
-    if (key === FOOD && !note) { msg[key] = ['err', '請寫要帶什麼，例如能量棒 1 盒']; last = { name, child }; renderHelp(); return; }
+    draftNote = note; last = { name: '', child };
     if (!item) { msg[key] = ['err', '請填寫要帶什麼']; renderHelp(); return; }
-    if (!name) { msg[key] = ['err', '請填寫家長姓名']; last = { name, child }; renderHelp(); return; }
-    if (!child) { msg[key] = ['err', '請選是哪位選手的家長']; last = { name, child }; renderHelp(); return; }
-    last = { name, child }; store.set('prep_last', last);
+    if (!child) { msg[key] = ['err', '請選是哪位選手的家長']; renderHelp(); return; }
+    if (key === FOOD && !note) { msg[key] = ['err', '請寫要帶什麼，例如能量棒 1 盒']; renderHelp(); return; }
+    if (key !== FOOD && !(parseInt(note, 10) > 0)) { msg[key] = ['err', '請填數量']; renderHelp(); return; }
+    const name = child + '的家長', days = '';
+    store.set('prep_last', last);
     busy = true; renderHelp();
     try{
       const j = await post({ kind:'help', item, name, child, days, note });
