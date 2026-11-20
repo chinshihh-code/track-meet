@@ -141,8 +141,8 @@ let LIST = [], STUDENTS = [], openItem = null, busy = false, msg = {};
 let mineIds = store.get('prep_mine', []);
 let draftItem = '', draftNote = '', draftDays = [];
 const DAYS = ['11/24','11/25'], DAYLBL = {'11/24':'11/24（一）','11/25':'11/25（二）'};
-const daysOf = r => DAYS.includes(r.days) ? [r.days] : DAYS;
-const dayTag = r => DAYS.includes(r.days) ? r.days : '兩天';
+const daysOf = r => { const t = String(r.days || ''); if (t.includes('兩天')) return DAYS; const d = DAYS.filter(x => t.includes(x) || t.includes('Nov ' + x.slice(3))); return d.length ? d : DAYS; };
+const dayTag = r => { const d = daysOf(r); return d.length === 2 ? '兩天' : d[0]; };
 let last = store.get('prep_last', { name: '', child: '' });
 
 function formHTML(item){
@@ -205,7 +205,7 @@ document.addEventListener('click', async e => {
     if (key === FOOD && !note) { msg[key] = ['err', '請寫要帶什麼，例如能量棒 1 盒']; renderHelp(); return; }
     if (key !== FOOD && !(parseInt(note, 10) > 0)) { msg[key] = ['err', '請填數量']; renderHelp(); return; }
     if (!picked.length) { msg[key] = ['err', '請勾選哪幾天會帶']; renderHelp(); return; }
-    const name = child + '的家長', days = picked.length === 2 ? '兩天' : picked[0];
+    const name = child + '的家長', days = picked.length === 2 ? '兩天' : DAYLBL[picked[0]];
     store.set('prep_last', last);
     busy = true; renderHelp();
     try{
