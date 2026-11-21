@@ -140,7 +140,7 @@ renderMine();
 let LIST = [], STUDENTS = [], openItem = null, busy = false, msg = {};
 let mineIds = store.get('prep_mine', []);
 let draftItem = '', draftNote = '', draftDays = [];
-const DAYS = ['11/24','11/25'], DAYLBL = {'11/24':'11/24（一）','11/25':'11/25（二）'};
+const DAYS = ['11/24','11/25'], DAYLBL = {'11/24':'11/24（二）','11/25':'11/25（三）'};
 const daysOf = r => { const t = String(r.days || ''); if (t.includes('兩天')) return DAYS; const d = DAYS.filter(x => t.includes(x) || t.includes('Nov ' + x.slice(3))); return d.length ? d : DAYS; };
 const dayTag = r => { const d = daysOf(r); return d.length === 2 ? '兩天' : d[0]; };
 let last = store.get('prep_last', { name: '', child: '' });
