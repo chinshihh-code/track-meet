@@ -1,5 +1,5 @@
 {
- "updated": "2026/11/25 11:19",
+ "updated": "2026/11/25 11:22",
  "ok": true,
  "items": {
   "跳高|決賽|女": {
@@ -488,6 +488,36 @@
    "upsKnown": false,
    "count": 8,
    "rows": []
+  },
+  "推鉛球|決賽|女": {
+   "upsKnown": false,
+   "count": 18,
+   "rows": [
+    {
+     "no": "4109",
+     "name": "黃侑晴",
+     "heat": "15",
+     "lane": null,
+     "score": "6.72",
+     "wind": "",
+     "rank": 3,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    },
+    {
+     "no": "4106",
+     "name": "許妍舞",
+     "heat": "5",
+     "lane": null,
+     "score": "5.98",
+     "wind": "",
+     "rank": 7,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    }
+   ]
   }
  },
  "published": [
@@ -509,6 +539,7 @@
   "60公尺|預賽|女",
   "60公尺|預賽|男",
   "壘球擲遠|決賽|女",
+  "推鉛球|決賽|女",
   "推鉛球|決賽|男",
   "跳遠|決賽|女",
   "跳遠|決賽|男",
