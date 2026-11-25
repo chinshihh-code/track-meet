@@ -1,6 +1,387 @@
 {
- "updated": "2026/11/25 03:43",
+ "updated": "2026/11/25 08:21",
  "ok": true,
- "items": {},
- "published": []
+ "items": {
+  "跳高|決賽|女": {
+   "upsKnown": false,
+   "count": 22,
+   "rows": [
+    {
+     "no": "4107",
+     "name": "楊凱婷",
+     "heat": "3",
+     "lane": null,
+     "score": "1.05",
+     "wind": "",
+     "rank": 14,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    },
+    {
+     "no": "4108",
+     "name": "陳景馨",
+     "heat": "16",
+     "lane": null,
+     "score": "1.00",
+     "wind": "",
+     "rank": 20,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  },
+  "跳遠|決賽|女": {
+   "upsKnown": false,
+   "count": 22,
+   "rows": [
+    {
+     "no": "4109",
+     "name": "黃侑晴",
+     "heat": "16",
+     "lane": null,
+     "score": "3.53",
+     "wind": "-0.2",
+     "rank": 7,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    },
+    {
+     "no": "4107",
+     "name": "楊凱婷",
+     "heat": "15",
+     "lane": null,
+     "score": "3.28",
+     "wind": "",
+     "rank": 11,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  },
+  "壘球擲遠|決賽|女": {
+   "upsKnown": false,
+   "count": 22,
+   "rows": [
+    {
+     "no": "4106",
+     "name": "許妍舞",
+     "heat": "7",
+     "lane": null,
+     "score": "33.33",
+     "wind": "",
+     "rank": 3,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    },
+    {
+     "no": "4105",
+     "name": "曾禎",
+     "heat": "16",
+     "lane": null,
+     "score": "21.10",
+     "wind": "",
+     "rank": 13,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  },
+  "推鉛球|決賽|男": {
+   "upsKnown": false,
+   "count": 19,
+   "rows": [
+    {
+     "no": "3123",
+     "name": "陳予睿",
+     "heat": "5",
+     "lane": null,
+     "score": "6.79",
+     "wind": "",
+     "rank": 12,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    },
+    {
+     "no": "3128",
+     "name": "唐麒勛",
+     "heat": "19",
+     "lane": null,
+     "score": "6.36",
+     "wind": "",
+     "rank": 14,
+     "heatRank": null,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  },
+  "60公尺|預賽|男": {
+   "upsKnown": false,
+   "count": 34,
+   "rows": [
+    {
+     "no": "3132",
+     "name": "洪翊傑",
+     "heat": "1",
+     "lane": "2",
+     "score": "10.08",
+     "wind": "+0.3",
+     "rank": 30,
+     "heatRank": 6,
+     "ups": "",
+     "remark": ""
+    },
+    {
+     "no": "3130",
+     "name": "林楷宸",
+     "heat": "2",
+     "lane": "8",
+     "score": "10.50",
+     "wind": "0.0",
+     "rank": 33,
+     "heatRank": 6,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  },
+  "60公尺|預賽|女": {
+   "upsKnown": false,
+   "count": 34,
+   "rows": [
+    {
+     "no": "4104",
+     "name": "黃映綺",
+     "heat": "5",
+     "lane": "2",
+     "score": "9.56",
+     "wind": "-0.1",
+     "rank": 8,
+     "heatRank": 1,
+     "ups": "",
+     "remark": "q8"
+    },
+    {
+     "no": "4102",
+     "name": "楊光夏",
+     "heat": "2",
+     "lane": "7",
+     "score": "10.28",
+     "wind": "-0.5",
+     "rank": 24,
+     "heatRank": 5,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  },
+  "60公尺|複賽|男": {
+   "upsKnown": false,
+   "count": 16,
+   "rows": []
+  },
+  "60公尺|複賽|女": {
+   "upsKnown": false,
+   "count": 16,
+   "rows": [
+    {
+     "no": "4104",
+     "name": "黃映綺",
+     "heat": "2",
+     "lane": "6",
+     "score": "9.48",
+     "wind": "+0.3",
+     "rank": 7,
+     "heatRank": 4,
+     "ups": "",
+     "remark": "q1"
+    }
+   ]
+  },
+  "60公尺|決賽|男": {
+   "upsKnown": false,
+   "count": 8,
+   "rows": []
+  },
+  "60公尺|決賽|女": {
+   "upsKnown": false,
+   "count": 8,
+   "rows": [
+    {
+     "no": "4104",
+     "name": "黃映綺",
+     "heat": "1",
+     "lane": "8",
+     "score": "9.57",
+     "wind": "-0.5",
+     "rank": 8,
+     "heatRank": 8,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  },
+  "200公尺|預賽|男": {
+   "upsKnown": false,
+   "count": 30,
+   "rows": [
+    {
+     "no": "3127",
+     "name": "李繼熙",
+     "heat": "1",
+     "lane": "8",
+     "score": "33.72",
+     "wind": "-0.8",
+     "rank": 19,
+     "heatRank": 6,
+     "ups": "",
+     "remark": ""
+    },
+    {
+     "no": "3133",
+     "name": "林承蓒",
+     "heat": "3",
+     "lane": "7",
+     "score": "33.74",
+     "wind": "-0.1",
+     "rank": 20,
+     "heatRank": 6,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  },
+  "200公尺|預賽|女": {
+   "upsKnown": false,
+   "count": 30,
+   "rows": [
+    {
+     "no": "4108",
+     "name": "陳景馨",
+     "heat": "3",
+     "lane": "4",
+     "score": "33.70",
+     "wind": "-0.1",
+     "rank": 10,
+     "heatRank": 4,
+     "ups": "",
+     "remark": ""
+    },
+    {
+     "no": "4103",
+     "name": "黃映榕",
+     "heat": "4",
+     "lane": "4",
+     "score": "36.32",
+     "wind": "+1.1",
+     "rank": 24,
+     "heatRank": 4,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  },
+  "200公尺|決賽|男": {
+   "upsKnown": false,
+   "count": 8,
+   "rows": []
+  },
+  "200公尺|決賽|女": {
+   "upsKnown": false,
+   "count": 8,
+   "rows": []
+  },
+  "4x100公尺接力|預賽|男": {
+   "upsKnown": false,
+   "count": 16,
+   "rows": [
+    {
+     "no": "",
+     "name": "蔡奕成、李繼熙、陳質平、林承蓒",
+     "heat": "2",
+     "lane": "6",
+     "score": "1:02.80",
+     "wind": "",
+     "rank": 12,
+     "heatRank": 6,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  },
+  "4x100公尺接力|預賽|女": {
+   "upsKnown": false,
+   "count": 15,
+   "rows": [
+    {
+     "no": "",
+     "name": "黃映綺、陳景馨、黃侑晴、高暐甯",
+     "heat": "2",
+     "lane": "2",
+     "score": "1:01.57",
+     "wind": "",
+     "rank": 6,
+     "heatRank": 3,
+     "ups": "",
+     "remark": "q4"
+    }
+   ]
+  },
+  "2000公尺競走|決賽|女": {
+   "upsKnown": false,
+   "count": 15,
+   "rows": [
+    {
+     "no": "4101",
+     "name": "石曼妮",
+     "heat": "3",
+     "lane": null,
+     "score": "13:07.78",
+     "wind": "",
+     "rank": 1,
+     "heatRank": 0,
+     "ups": "",
+     "remark": ""
+    },
+    {
+     "no": "4110",
+     "name": "詹媛茜",
+     "heat": "2",
+     "lane": null,
+     "score": "13:38.29",
+     "wind": "",
+     "rank": 3,
+     "heatRank": 0,
+     "ups": "",
+     "remark": ""
+    }
+   ]
+  }
+ },
+ "published": [
+  "2000公尺競走|決賽|女",
+  "200公尺|決賽|女",
+  "200公尺|決賽|男",
+  "200公尺|預賽|女",
+  "200公尺|預賽|男",
+  "4x100公尺接力|預賽|女",
+  "4x100公尺接力|預賽|男",
+  "60公尺|決賽|女",
+  "60公尺|決賽|男",
+  "60公尺|複賽|女",
+  "60公尺|複賽|男",
+  "60公尺|預賽|女",
+  "60公尺|預賽|男",
+  "壘球擲遠|決賽|女",
+  "推鉛球|決賽|男",
+  "跳遠|決賽|女",
+  "跳高|決賽|女"
+ ]
 }
